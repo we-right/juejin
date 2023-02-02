@@ -1,4 +1,15 @@
+// {
+//   // https://nuxt.com/docs/guide/concepts/typescript
+//   "extends": "./.nuxt/tsconfig.json"
+// }
+
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
+  "compilerOptions": {
+    "types": [
+      // ... your other types
+      "node"
+    ],
+  },
   "extends": "./.nuxt/tsconfig.json"
 }
+
