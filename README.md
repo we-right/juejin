@@ -74,5 +74,6 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 > 部分主题化
 
 # CMS
+https://github.com/we-right/CMS
 
 # 演示地址
