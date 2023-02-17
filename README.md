@@ -62,7 +62,7 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 >|- yarn.lock
 
 # 前端项目分工
-> 黄伟杰(666-3334)：  
+> 黄伟杰(WeijieHuang)：  
 > 
 
 > 亓胜鹏(qgxx)：
