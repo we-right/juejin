@@ -60,20 +60,3 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 >|- tsconfig.json
 >
 >|- yarn.lock
-
-# 前端项目分工
-> 黄伟杰(WeijieHuang)：  
-> 
-
-> 亓胜鹏(qgxx)：
-> 
-> 自定义框架及其响应式
->   
-> 首页及其响应式
->
-> 部分主题化
-
-# CMS
-https://github.com/we-right/CMS
-
-# 演示地址
