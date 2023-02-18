@@ -1,5 +1,5 @@
 # 项目介绍
-Nuxt3的仿掘金网页，使用element-plus、naive-ui作为ui框架，使用pinia来进行状态管理，使用i18n来进行语言配置，路由、打包均为Nuxt3默认设置。
+Nuxt3的仿掘金网页，使用element-plus、naive-ui作为ui框架，使用pinia来进行状态管理，使用i18n来进行语言配置，路由、打包均为Nuxt3默认设置，编程语言主要使用ts，css使用scss、windi-css。
 
 # Setup
 Make sure to install the dependencies:
