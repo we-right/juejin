@@ -4,13 +4,38 @@ import { NScrollbar } from 'naive-ui'
 
 const toptap = useTopTapStore()
 
-defineProps({
-    channels: {
-        type: Array,
-        default: () => []
+const navs = reactive([
+    {
+        name: '综合'
+    },
+    {
+        name: '关注'
+    },
+    {
+        name: '后端'
+    },
+    {
+        name: '前端'
+    },
+    {
+        name: 'Android'
+    },
+    {
+        name: 'iOS'
+    },
+    {
+        name: '人工智能'
+    },
+    {
+        name: '开发工具'
+    },
+    {
+        name: '代码人生'
+    },
+    {
+        name: '阅读'
     }
-})
-
+])
 </script>
 
 <template>
@@ -18,12 +43,12 @@ defineProps({
     <div class="nav" :class="[toptap.isShowTopTap ? '' : 'nav-sticky']">
       <div class="nav-main">
         <ul class="nav-list" v-if="toptap.windowWidth > 1000">
-          <li class="nav-item" v-for="nav in channels" :key="nav.id">{{ nav.name }}</li>
+          <li class="nav-item" v-for="nav in navs" :key="nav.id">{{ nav.name }}</li>
           <NuxtLink class="navs-manager">标签管理</NuxtLink>
         </ul>    
         <div v-else class="nav-list-mobile">
           <ul  class="scroll">
-            <li class="nav-item-mobile" v-for="nav in channels" :key="nav.id">{{ nav.name }}</li>
+            <li class="nav-item-mobile" v-for="nav in navs" :key="nav.id">{{ nav.name }}</li>
           </ul>
         </div>
       </div> 
