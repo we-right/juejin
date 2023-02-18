@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Category from '../components/Category.vue'
 import { useIndexStore } from '../stores/index'
 import { ElSelect, ElOption } from 'element-plus' 
@@ -51,7 +51,7 @@ const navs = reactive([
           <ul class="main-navs">
             <li class="main-nav" v-for="nav in navs" :key="nav.id" @click="index.changeNavType(nav)"
             :class="[nav.id === index.navId ? 'nav-active' : '']">{{ nav.name }}</li>
-            <el-select v-if="index.navTypes.length" size="mini" placeholder="请选择" class="hot-rank">
+            <el-select v-if="index.navTypes.length" size="small" placeholder="请选择" class="hot-rank">
               <el-option v-for="type in index.navTypes" :label="type.name" :value="type.name"></el-option>
             </el-select>
           </ul>

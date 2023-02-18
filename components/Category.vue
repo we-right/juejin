@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useTopTapStore } from '~~/stores/toptap';
 import { NScrollbar } from 'naive-ui'
 
@@ -43,12 +43,12 @@ const navs = reactive([
     <div class="nav" :class="[toptap.isShowTopTap ? '' : 'nav-sticky']">
       <div class="nav-main">
         <ul class="nav-list" v-if="toptap.windowWidth > 1000">
-          <li class="nav-item" v-for="nav in navs" :key="nav.id">{{ nav.name }}</li>
+          <li class="nav-item" v-for="nav in navs" :key="nav.name">{{ nav.name }}</li>
           <NuxtLink class="navs-manager">标签管理</NuxtLink>
         </ul>    
         <div v-else class="nav-list-mobile">
           <ul  class="scroll">
-            <li class="nav-item-mobile" v-for="nav in navs" :key="nav.id">{{ nav.name }}</li>
+            <li class="nav-item-mobile" v-for="nav in navs" :key="nav.name">{{ nav.name }}</li>
           </ul>
         </div>
       </div> 

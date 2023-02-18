@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useTopTapStore } from '../stores/toptap'
 const taps = reactive([
   {
@@ -55,12 +55,12 @@ onMounted(() => {
           <img src="/juejin.ico" alt="juejin" />
         </NuxtLink> 
         <ul class="taps-pc" v-if="toptap.windowWidth > 600">
-          <li v-for="tap in taps" :key="tap.id" class="tap-item"><NuxtLink :to="tap.link">{{ tap.name }}</NuxtLink></li>
+          <li v-for="tap in taps" :key="tap.name" class="tap-item"><NuxtLink :to="tap.link">{{ tap.name }}</NuxtLink></li>
         </ul>
         <div v-else class="taps-mobile-wrapper">
           <button class="button-taps" @click="toptap.dropDown = toptap.dropDown ? false : true">{{ $route.name }}</button>
           <ul class="taps-mobile" v-if="toptap.dropDown">
-            <li v-for="tap in taps" :key="tap.id" class="tap-item-mobile"><NuxtLink :to="tap.link">{{ tap.name }}</NuxtLink></li>
+            <li v-for="tap in taps" :key="tap.name" class="tap-item-mobile"><NuxtLink :to="tap.link">{{ tap.name }}</NuxtLink></li>
           </ul>
         </div>
       </div>
