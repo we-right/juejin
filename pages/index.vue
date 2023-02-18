@@ -46,7 +46,7 @@ const navs = reactive([
   <div class="index">
     <Category />
     <div class="index-wrapper"></div>
-      <div class="index-main">
+      <div class="index-main-pc">
         <div class="main-header">
           <ul class="main-navs">
             <li class="main-nav" v-for="nav in navs" :key="nav.id" @click="index.changeNavType(nav)"
@@ -69,7 +69,7 @@ const navs = reactive([
     top: 4em;
   }
 }
-.index-main {
+.index-main-pc {
   position: absolute;
   width: 40%;
   border: 1px solid #000;
