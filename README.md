@@ -62,7 +62,7 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 >|- yarn.lock
 
 # 前端项目分工
-> 黄伟杰：  
+> 黄伟杰(WeijieHuang)：  
 > 
 
 > 亓胜鹏(qgxx)：
@@ -74,5 +74,6 @@ Check out the [deployment documentation](https://nuxt.com/docs/getting-started/d
 > 部分主题化
 
 # CMS
+https://github.com/we-right/CMS
 
 # 演示地址
