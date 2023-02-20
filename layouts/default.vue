@@ -14,4 +14,7 @@ div {
   background-color: #f4f4f4;
   min-height: 100vh;
 }
+main {
+  width: 100%;
+}
 </style>
