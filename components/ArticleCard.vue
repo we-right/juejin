@@ -1,6 +1,6 @@
 <template>
   <div class="article-card">
-    <NuxtLink to="/articles/1">article</NuxtLink>
+    <NuxtLink to="/articles/3">article</NuxtLink>
   </div>
 </template>
 

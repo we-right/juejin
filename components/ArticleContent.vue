@@ -16,6 +16,7 @@ const props = defineProps({
 });
 
 let htmls = computed(() => {
+  // console.log(marked.parse(props.content.content));
   return props.content?.content ? marked.parse(props.content.content) : "";
 });
 
