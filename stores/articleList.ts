@@ -39,11 +39,12 @@ export const useArtcileListStore = defineStore('articleList', {
     state: () => {
         return {
             articList: [] as Array<ArticleList>,
-            isAdd: false as boolean
+            isAdd: false as boolean,
+            addCount: [] as Array<boolean>
         }
     },
     actions: {
-        addList() {
+        addArc() {
             var myHeaders = new Headers();
             myHeaders.append("User-Agent", "Apifox/1.0.0 (https://www.apifox.cn)");
             var requestOptions = {
@@ -57,9 +58,13 @@ export const useArtcileListStore = defineStore('articleList', {
                 .then(response => response.text())
                 .then(result => {
                     newList = JSON.parse(result)
-                    console.log(newList)
+                    // console.log(newList)
                     this.articList.push(newList)})
                 .catch(error => console.log('error', error)); 
+        },
+        Count(index: number) {
+            this.addCount[index] ? this.articList[index].like-- : this.articList[index].like++
+            this.addCount[index] = !this.addCount[index]
         }
     }
 })
