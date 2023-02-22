@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-windicss',
     '@pinia/nuxt',
-    '@element-plus/nuxt'
+    '@element-plus/nuxt',
   ],
   build: {
     transpile:

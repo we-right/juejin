@@ -10,7 +10,7 @@
 </template>
 
 <style scoped>
-@import url('//at.alicdn.com/t/c/font_3906421_w1qv1wjhnu9.css');
+@import url('//at.alicdn.com/t/c/font_3906421_ggfmrjunfcv.css');
 @media screen and (max-width: 500px) {
   html {
     font-size: 10px;
