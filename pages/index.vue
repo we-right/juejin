@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Category from '../components/Category.vue'
 import ArticleList from '../components/ArticleList.vue'
+import AutherRank from '../components/AutherRank.vue'
 import { useIndexStore } from '../stores/index'
 import { useTopTapStore } from '~~/stores/toptap'
 
@@ -84,7 +85,9 @@ onMounted(() => {
         </div>
         <article-list></article-list>
       </div>
-      <div class="index-side" v-if="toptap.windowWidth > 1000">小册</div>
+      <div class="index-side" v-if="toptap.windowWidth > 1000">
+        <auther-rank></auther-rank>
+      </div>
   </div>
 </template>
 
@@ -132,6 +135,7 @@ onMounted(() => {
 .index-side {
   width: 20%;
   border: 1px solid #000;
+  border-radius: 5px;
   margin: 0.5em 18%;
   float: right;
 }

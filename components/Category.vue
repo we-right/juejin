@@ -93,6 +93,7 @@ const navs = reactive([
   }
   .navs-manager {
       position: absolute;
+      cursor: pointer;
       right: 5%;
   } 
 }
