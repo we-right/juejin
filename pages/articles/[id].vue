@@ -4,6 +4,7 @@
       'container',
       windowWidth > 960 ? 'container-PC' : 'container-mobile',
     ]"
+    :style="{ width: windowWidth + 'px' }"
   >
     <aside
       :class="['options', windowWidth > 960 ? 'options-PC' : 'options-mobile']"
@@ -15,9 +16,39 @@
       <!-- </ul> -->
     </aside>
     <section :class="['main', windowWidth > 960 ? 'main-PC' : 'main-mobile']">
-      <article-content :content="content.data"></article-content>
+      <article-content
+        :content="content.data"
+        @navigations="getNavTree"
+      ></article-content>
+      <!-- <section class="book-about">
+        <h4>相关小册</h4>
+        <div>
+          <section v-for="item in recommendBooks" :key="item.id"></section>
+        </div>
+      </section> -->
+      <!-- <section class="comment">
+        <h4>评论</h4>
+        <section></section>
+        <h4>全部评论<span>2</span></h4>
+        <section></section>
+      </section> -->
+      <section class="recommend">
+        <h5>相关推荐</h5>
+        <!-- <article-card></article-card> -->
+      </section>
     </section>
-    <aside class="right"></aside>
+    <aside class="right">
+      <div style="height: 30rem">
+        <!-- <img
+          :src="
+            'http://127.0.0.1:1337' +
+              content.data.author?.data?.avatar?.data.attributes.url || ''
+          "
+          alt=""
+        /> -->
+      </div>
+      <div class="navigation" id="navigations"></div>
+    </aside>
   </div>
 </template>
 
@@ -33,7 +64,7 @@ const options = ref([
   },
   {
     id: "02",
-    icon: "icon-pinglun",
+    icon: "icon-pinglunxuanzhong",
     show: true,
   },
   {
@@ -41,41 +72,101 @@ const options = ref([
     icon: "icon-shoucang",
     show: true,
   },
+  {
+    id: "04",
+    icon: "icon-fenxiang",
+    show: true,
+  },
+  {
+    id: "06",
+    icon: "icon-jinggao",
+    show: true,
+  },
+  {
+    id: "05",
+    icon: "icon-jujiao",
+    show: true,
+  },
 ]);
 let content = reactive({
   title: "文章md字符串",
   data: {},
 });
+let navigations = ref([]);
+let recommendBooks = ref([
+  {
+    id: 1,
+    title: "前端性能优化原理与实践",
+    payed: 12457,
+    money: 29.9,
+    author: "修言",
+  },
+  {
+    id: 2,
+    title: "JavaScript设计模式核心原理与应用实践",
+    payed: 12457,
+    money: 29.9,
+    author: "修言",
+  },
+]);
 const route = useRoute();
 let windowWidth = ref(100);
 
 onMounted(() => {
-  request(`/api/articles/${route.params.id}`, {}, 0).then((res) => {
+  request(`/api/articles/${route.params.id}?populate=*`, {}, 0).then((res) => {
     res.data.attributes.content = res.data.attributes.content.replaceAll(
       "/uploads",
       "http://127.0.0.1:1337/uploads"
     );
+    request(
+      `/api/authors/${res.data.attributes.author.data.id}?populate=profile`,
+      {},
+      0
+    ).then((e) => {
+      res.data.attributes.author = e.data;
+      content.data = res.data.attributes;
+      console.log(content.data);
+    });
     windowWidth.value = window.screen.width;
     // 要放在mounted里，不然不会有window对象
     window.onresize = () => {
-      console.log("resize", window.navigator);
+      // console.log("resize", window.navigator);
       windowWidth.value = window.screen.width;
-      console.log(windowWidth.value);
+      // console.log(windowWidth.value);
     };
-    content.data = res.data.attributes;
   });
 });
+onUpdated(() => {});
+const getNavTree = (e) => {
+  // console.log(e.length);
+  let nav = document.getElementById("navigations");
+  // console.log(nav);
+  e.forEach((elem) => {
+    // console.log(elem);
+    let a = document.createElement("a");
+    a.href = "#" + elem.id;
+    a.innerText = elem.id;
+    // a.style.textIndent = elem.navIndex + 'rem'
+    a.style.marginLeft = elem.navIndex + 'rem'
+    nav.appendChild(a);
+  });
+};
 </script>
 <style scoped lang='scss'>
 .container {
   // min-width: 75rem;
   margin: 0 auto;
+  display: flex;
+  // width: 100%;
   &-mobile {
     width: 100%;
+    // margin: 0 0;
+    box-sizing: border-box;
   }
   &-PC {
-    min-width: 75rem;
-    max-width: 90rem;
+    width: 100%;
+    // min-width: 75rem;
+    // max-width: 90rem;
   }
 }
 .options {
@@ -89,10 +180,11 @@ onMounted(() => {
     }
   }
   &-PC {
-    top: 20rem;
+    top: 10rem;
     text-align: center;
-    width: 6rem;
-    line-height: 6rem;
+    width: 3rem;
+    height: 3rem;
+    line-height: 3rem;
     li {
       background-color: antiquewhite;
       border-radius: 50%;
@@ -113,7 +205,7 @@ onMounted(() => {
 }
 .main {
   &-PC {
-    width: 75%;
+    width: 60%;
     margin-left: 10%;
   }
   &-mobile {
@@ -123,6 +215,13 @@ onMounted(() => {
 .right {
   &-PC {
     width: 10%;
+    .navigation {
+      position: sticky;
+      top: 20rem;
+      width: 15rem;
+      // text-indent: 0px;
+      margin-left: 1.5rem;
+    }
   }
   &-mobile {
     display: none;
