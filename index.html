@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		html, body {
+		    /* 增加锚点跳转过度效果 */
+		    scroll-behavior: smooth;
+		}
+		.box {
+			width: 1200px;
+			margin: 0 auto;
+		}
+		.box .item {
+			height: 600px;
+			border: 1px solid #ccc;
+			font-size: 30px;
+			margin-bottom: 10px;
+			position: relative;
+		}
+		.right-fix {
+			position: fixed;
+			right: 10px;
+			top: 30%;
+		}
+		.right-fix .item a{
+			display: block;
+			height: 60px;
+			width: 60px;
+			border: 1px solid #ccc;
+		}
+
+		/* 锚点元素位置 */
+		.anchor-element {
+		    position: absolute;
+		    /*控制距离顶部 100px*/
+		    top: -100px;
+		    visibility: hidden;
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="item"><div id="item1" class="anchor-element"></div>item1</div>
+		<div class="item"><div id="item2" class="anchor-element"></div>item2</div>
+		<div class="item"><div id="item3" class="anchor-element"></div>item3</div>
+		<div class="item"><div id="item4" class="anchor-element"></div>item4</div>
+		<div class="item"><div id="item5" class="anchor-element"></div>item5</div>
+	</div>
+	<div class="right-fix">
+		<div class="item"><a href="#item1">1</a></div>
+		<div class="item"><a href="#item2">2</a></div>
+		<div class="item"><a href="#item3">3</a></div>
+		<div class="item"><a href="#item4">4</a></div>
+		<div class="item"><a href="#item5">5</a></div>
+	</div>
+</body>
+</html>

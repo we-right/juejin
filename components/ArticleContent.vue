@@ -1,14 +1,24 @@
 <template>
+  <sections style="height: 10rem"></sections>
   <h1>{{ content.title }}</h1>
   <section class="author">
-    <div class="message">
+    <div class="message" style="display: flex">
       <section
         style="width: 4rem; height: 4rem; border-radius: 50%; overflow: hidden"
       >
+        <!--  -->
         <img
+          style="
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            overflow: hidden;
+          "
           :src="
-            'http://127.0.0.1:1337' +
-              content?.author?.attributes.profile.data.attributes.url || ''
+            content?.author
+              ? 'http://127.0.0.1:1337' +
+                content.author.attributes.profile.attributes.url
+              : ''
           "
           alt=""
         />
@@ -25,18 +35,18 @@
         "
       >
         <h6>
-          {{ content?.author.attributes.name || "" }}
+          {{ content.author ? content.author.attributes.name : "" }}
         </h6>
         <h6>{{ content.updatedAt || "" }}</h6>
         <!-- <button>+ 关注</button> -->
       </section>
     </div>
     <div class="follow">
-      <!-- <button
+      <button
         style="width: 3rem; height: 3rem; background-color: cornflowerblue"
       >
         关注
-      </button> -->
+      </button>
     </div>
   </section>
   <article class="article-content" v-html="htmls" id="articleContent"></article>
@@ -53,47 +63,35 @@ const props = defineProps({
   },
 });
 const emits = defineEmits(["navigations"]);
-// const refreshNavTree = (treeData) => {
-//   console.log(treeData);
-//   this.navTree = treeData;
-// };
 const Tags = ["H1", "H2", "H3", "h4"];
 let user = reactive({
   data: {},
   name: "user",
 });
-watch(
-  () => props.content,
-  () => {
-    console.log("change");
-  },
-  {
-    deep: true,
-  }
-);
+// watch(
+//   () => props.content,
+//   () => {
+//     console.log("change");
+//   },
+//   {
+//     deep: true,
+//   }
+// );
 let htmls = computed(() => {
   return props.content?.content ? marked.parse(props.content.content) : "";
 });
 watch(htmls, () => {
-  let htmlNode = document.getElementsByTagName("article");
+  let htmlNode = document.getElementsByTagName("article") || null;
   // 浏览器控制台展开console的时候会重新获取值
+  // if (htmlNode)
   setTimeout(() => {
-    // let list = JSON.stringify(htmlNode[0].childNodes);
-    // console.log(htmlNode[0].children);
-    // for(let i of htmlNode[0].children){
-    //   console.log(i);
-    // }
     let iindex = -1;
     for (let i = 0; i < htmlNode[0].children.length; i++) {
       iindex = Tags.findIndex((item) => {
         return item == htmlNode[0].children[i].tagName;
       });
-
+      htmlNode[0].children[i].setAttribute("name", htmlNode[0].children[i].id);
       if (iindex !== -1) {
-        htmlNode[0].children[i].setAttribute(
-          "name",
-          htmlNode[0].children[i].id
-        );
         navTree.value.push({
           tagName: htmlNode[0].children[i].tagName,
           id: htmlNode[0].children[i].innerText,
@@ -101,32 +99,9 @@ watch(htmls, () => {
         });
       }
     }
-    // console.log(navTree);
+    console.log("hhh");
     emits("navigations", navTree.value);
-    // htmlNode[0].children.forEach((currentValue, currentIndex, listObj)=>{
-    //   console.log(typeof currentValue, currentIndex, listObj);
-    // })
   }, 3000);
-  // list.forEach((elem) => {
-  //   console.log(elem);
-  // });
-  // htmlNode[0].children.forEach(elem=>{
-  //   console.log(elem);
-  // })
-  // for(let i in htmlNode[0].childNodes){
-  //   console.log(htmlNode[0].childNodes[i]);
-  // }
-  // htmlNode[0].childNodes.forEach()
-  // for(let aa of htmlNode[0].childNodes){
-  //   console.log(aa);
-  // }
-  // Array.prototype.forEach.call(htmlNode[0].childNodes, function (checkbox) {
-  //   // checkbox.checked = true;
-  //   console.log(checkbox);
-  // }); 
-
-  let arr = document.getElementsByTagName("h3");
-  // console.log(arr, "arr", htmls);
 });
 </script>
 <style scoped lang='scss'>

@@ -5,6 +5,7 @@
       windowWidth > 960 ? 'container-PC' : 'container-mobile',
     ]"
     :style="{ width: windowWidth + 'px' }"
+    id="container"
   >
     <aside
       :class="['options', windowWidth > 960 ? 'options-PC' : 'options-mobile']"
@@ -20,34 +21,52 @@
         :content="content.data"
         @navigations="getNavTree"
       ></article-content>
-      <!-- <section class="book-about">
-        <h4>相关小册</h4>
-        <div>
-          <section v-for="item in recommendBooks" :key="item.id"></section>
-        </div>
-      </section> -->
-      <!-- <section class="comment">
-        <h4>评论</h4>
-        <section></section>
-        <h4>全部评论<span>2</span></h4>
-        <section></section>
-      </section> -->
       <section class="recommend">
         <h5>相关推荐</h5>
         <!-- <article-card></article-card> -->
       </section>
     </section>
     <aside class="right">
-      <div style="height: 30rem">
-        <!-- <img
+      <section>
+        <img
+          style="
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            overflow: hidden;
+          "
           :src="
-            'http://127.0.0.1:1337' +
-              content.data.author?.data?.avatar?.data.attributes.url || ''
+            content.data?.author
+              ? 'http://127.0.0.1:1337' +
+                content.data.author.attributes.profile.attributes.url
+              : ''
           "
           alt=""
-        /> -->
+        />
+        <section
+          style="
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-left: 1rem;
+          "
+        >
+          <h6>
+            {{ content.author ? content.author.attributes.name : "" }}
+          </h6>
+          <!-- <h6>{{ content.updatedAt || "" }}</h6> -->
+          <!-- <button>+ 关注</button> -->
+        </section>
+      </section>
+
+      <section style="height: 10rem"></section>
+      <div
+        class="navigation"
+        id="navigations"
+        style="position: sticky; top: 10rem; width: 15rem; margin-left: 1.5rem"
+      >
+        <h6 style="border-bottom: 1px solid">目录</h6>
       </div>
-      <div class="navigation" id="navigations"></div>
     </aside>
   </div>
 </template>
@@ -123,6 +142,9 @@ onMounted(() => {
       {},
       0
     ).then((e) => {
+      console.log(e);
+      e.data.attributes.profile = { ...e.data.attributes.profile.data };
+      // res.data.attributes
       res.data.attributes.author = e.data;
       content.data = res.data.attributes;
       console.log(content.data);
@@ -130,32 +152,52 @@ onMounted(() => {
     windowWidth.value = window.screen.width;
     // 要放在mounted里，不然不会有window对象
     window.onresize = () => {
-      // console.log("resize", window.navigator);
       windowWidth.value = window.screen.width;
-      // console.log(windowWidth.value);
     };
   });
 });
 onUpdated(() => {});
 const getNavTree = (e) => {
-  // console.log(e.length);
+  console.log(e.length);
   let nav = document.getElementById("navigations");
-  // console.log(nav);
+  console.log(nav);
   e.forEach((elem) => {
-    // console.log(elem);
     let a = document.createElement("a");
     a.href = "#" + elem.id;
     a.innerText = elem.id;
-    // a.style.textIndent = elem.navIndex + 'rem'
-    a.style.marginLeft = elem.navIndex + 'rem'
+    a.style.marginLeft = Math.round((elem.navIndex * 10) / 16) + "rem";
+    a.addEventListener("click", (e) => {
+      window.scrollTo(0, 100);
+      // console.log(e.target.innerText);
+      let item = document.getElementById(e.target.innerText);
+      console.log(item.offsetTop);
+      setTimeout(() => {
+        console.log("aaa");
+        window.scrollTo({
+          left: 0,
+          top: item.offsetTop - 100,
+          behavior: "smooth",
+        });
+      }, 200);
+      // item.offsetTop = 1000
+      // item.scrollTop = -100
+      // setTimeout(() => {
+      //   window.scroll(0,-100)
+      //   console.log('hhhh');
+      // }, 1000);
+      //
+    });
     nav.appendChild(a);
   });
 };
 </script>
 <style scoped lang='scss'>
 .container {
+  padding-top: 50px;
+
   // min-width: 75rem;
   margin: 0 auto;
+  margin-top: -50px;
   display: flex;
   // width: 100%;
   &-mobile {
@@ -215,13 +257,6 @@ const getNavTree = (e) => {
 .right {
   &-PC {
     width: 10%;
-    .navigation {
-      position: sticky;
-      top: 20rem;
-      width: 15rem;
-      // text-indent: 0px;
-      margin-left: 1.5rem;
-    }
   }
   &-mobile {
     display: none;
