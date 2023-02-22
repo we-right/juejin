@@ -10,11 +10,8 @@ import HeaderTap from '~~/components/HeaderTap.vue';
 </template>
 
 <style scoped>
-div {
-  background-color: #f4f4f4;
-  min-height: 100vh;
-}
 main {
-  width: 100%;
+  background-color: #f4f4f4;
+  min-height: 1000vh;
 }
 </style>
