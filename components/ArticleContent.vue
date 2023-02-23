@@ -22,9 +22,6 @@
           "
           alt=""
         />
-        <!-- <section>
-          <h6></h6>
-        </section> -->
       </section>
       <section
         style="
@@ -37,7 +34,7 @@
         <h6>
           {{ content.author ? content.author.attributes.name : "" }}
         </h6>
-        <h6>{{ content.updatedAt || "" }}</h6>
+        <h6>{{ timeFormat(content.updatedAt || "") }}</h6>
         <!-- <button>+ 关注</button> -->
       </section>
     </div>
@@ -56,6 +53,7 @@
 import { marked } from "marked";
 import { ref, reactive } from "vue";
 import request from "../utils/request";
+import timeFormat from "../utils/timeFormat";
 let navTree = ref([]);
 const props = defineProps({
   content: {
@@ -64,26 +62,12 @@ const props = defineProps({
 });
 const emits = defineEmits(["navigations"]);
 const Tags = ["H1", "H2", "H3", "h4"];
-let user = reactive({
-  data: {},
-  name: "user",
-});
-// watch(
-//   () => props.content,
-//   () => {
-//     console.log("change");
-//   },
-//   {
-//     deep: true,
-//   }
-// );
 let htmls = computed(() => {
   return props.content?.content ? marked.parse(props.content.content) : "";
 });
 watch(htmls, () => {
   let htmlNode = document.getElementsByTagName("article") || null;
   // 浏览器控制台展开console的时候会重新获取值
-  // if (htmlNode)
   setTimeout(() => {
     let iindex = -1;
     for (let i = 0; i < htmlNode[0].children.length; i++) {
@@ -99,7 +83,6 @@ watch(htmls, () => {
         });
       }
     }
-    console.log("hhh");
     emits("navigations", navTree.value);
   }, 3000);
 });
@@ -108,6 +91,8 @@ watch(htmls, () => {
 .author {
   display: flex;
   justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: 1.2rem;
 }
 h1 {
   font-size: 1.5rem;

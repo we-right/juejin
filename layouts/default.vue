@@ -11,7 +11,7 @@ import HeaderTap from '~~/components/HeaderTap.vue';
 
 <style scoped>
 main {
-  background-color: #f4f4f4;
-  min-height: 1000vh;
+  background-color: #fff;
+  /* min-height: 1000vh; */
 }
 </style>

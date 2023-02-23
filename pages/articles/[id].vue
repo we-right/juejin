@@ -7,15 +7,15 @@
     :style="{ width: windowWidth + 'px' }"
     id="container"
   >
+    <!-- 左侧 -->
     <aside
       :class="['options', windowWidth > 960 ? 'options-PC' : 'options-mobile']"
     >
-      <!-- <ul> -->
       <li v-for="item in options" :key="item.id">
         <i :class="['iconfont', item.icon]"></i>
       </li>
-      <!-- </ul> -->
     </aside>
+    <!-- 中间 -->
     <section :class="['main', windowWidth > 960 ? 'main-PC' : 'main-mobile']">
       <article-content
         :content="content.data"
@@ -23,11 +23,12 @@
       ></article-content>
       <section class="recommend">
         <h5>相关推荐</h5>
-        <!-- <article-card></article-card> -->
+        <article-card v-for="(item,index) in recommendArticles"  :key="index" :article="item"></article-card>
       </section>
     </section>
-    <aside class="right">
-      <section>
+    <!-- 右侧部分 -->
+    <aside :class="['right', windowWidth > 960 ? 'right-PC' : 'right-mobile']">
+      <section style="height: 4rem">
         <img
           style="
             width: 4rem;
@@ -51,21 +52,30 @@
             margin-left: 1rem;
           "
         >
-          <h6>
+          <!-- <h6>
             {{ content.author ? content.author.attributes.name : "" }}
-          </h6>
+          </h6> -->
           <!-- <h6>{{ content.updatedAt || "" }}</h6> -->
           <!-- <button>+ 关注</button> -->
         </section>
       </section>
 
       <section style="height: 10rem"></section>
+      <!-- 目录 -->
       <div
         class="navigation"
         id="navigations"
         style="position: sticky; top: 10rem; width: 15rem; margin-left: 1.5rem"
       >
-        <h6 style="border-bottom: 1px solid">目录</h6>
+        <h6
+          style="
+            border-bottom: 1px solid #e4e6eb;
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
+          "
+        >
+          目录
+        </h6>
       </div>
     </aside>
   </div>
@@ -75,6 +85,7 @@
 import { marked } from "marked";
 import request from "../../utils/request";
 import { ref, reactive } from "vue";
+
 const options = ref([
   {
     id: "01",
@@ -112,25 +123,11 @@ let content = reactive({
   data: {},
 });
 let navigations = ref([]);
-let recommendBooks = ref([
-  {
-    id: 1,
-    title: "前端性能优化原理与实践",
-    payed: 12457,
-    money: 29.9,
-    author: "修言",
-  },
-  {
-    id: 2,
-    title: "JavaScript设计模式核心原理与应用实践",
-    payed: 12457,
-    money: 29.9,
-    author: "修言",
-  },
-]);
+
 const route = useRoute();
 let windowWidth = ref(100);
-
+let hasGetRecommend = ref(false);
+let recommendArticles = ref([]);
 onMounted(() => {
   request(`/api/articles/${route.params.id}?populate=*`, {}, 0).then((res) => {
     res.data.attributes.content = res.data.attributes.content.replaceAll(
@@ -144,23 +141,51 @@ onMounted(() => {
     ).then((e) => {
       console.log(e);
       e.data.attributes.profile = { ...e.data.attributes.profile.data };
-      // res.data.attributes
       res.data.attributes.author = e.data;
       content.data = res.data.attributes;
-      console.log(content.data);
     });
+  });
+  windowWidth.value = window.screen.width;
+  // 要放在mounted里，不然不会有window对象
+  window.onresize = () => {
     windowWidth.value = window.screen.width;
-    // 要放在mounted里，不然不会有window对象
-    window.onresize = () => {
-      windowWidth.value = window.screen.width;
-    };
+  };
+  window.addEventListener("scroll", () => {
+    // const scrollTop =
+    //   document.documentElement.scrollTop || document.body.scrollTop;
+    // const clientHeight = document.documentElement.clientHeight;
+    // const scrollHeight = document.documentElement.scrollHeight;
+
+    var windowH = document.documentElement.clientHeight; //网页可视区域高度
+    var documentH = document.documentElement.offsetHeight; //元素在屏幕上所用的所有可见区域的高度
+    var scrollH = document.documentElement.scrollTop; //  获取或设置一个元素的内容垂直滚动的像素数
+    console.log(windowH, documentH, scrollH);
+    console.log(windowH + scrollH);
+    if (windowH + scrollH + 50 >= documentH) {
+      console.log("触底了");
+      // if (scrollTop + clientHeight >= scrollHeight) {
+      // 没有数据后，不触发请求
+      // console.log("get");
+      if (hasGetRecommend.value) return;
+      else {
+        request("/api/articles", {}, 0).then((res) => {
+          // console.log(res);
+          hasGetRecommend.value = true;
+          res.data.forEach((elem) => {
+            recommendArticles.value.push(elem);
+          });
+          console.log(recommendArticles.value);
+        });
+      }
+      // }
+    }
   });
 });
-onUpdated(() => {});
+watch(windowWidth.value, () => {
+  console.log(windowWidth.value);
+});
 const getNavTree = (e) => {
-  console.log(e.length);
   let nav = document.getElementById("navigations");
-  console.log(nav);
   e.forEach((elem) => {
     let a = document.createElement("a");
     a.href = "#" + elem.id;
@@ -179,13 +204,6 @@ const getNavTree = (e) => {
           behavior: "smooth",
         });
       }, 200);
-      // item.offsetTop = 1000
-      // item.scrollTop = -100
-      // setTimeout(() => {
-      //   window.scroll(0,-100)
-      //   console.log('hhhh');
-      // }, 1000);
-      //
     });
     nav.appendChild(a);
   });
@@ -194,8 +212,6 @@ const getNavTree = (e) => {
 <style scoped lang='scss'>
 .container {
   padding-top: 50px;
-
-  // min-width: 75rem;
   margin: 0 auto;
   margin-top: -50px;
   display: flex;
@@ -228,7 +244,7 @@ const getNavTree = (e) => {
     height: 3rem;
     line-height: 3rem;
     li {
-      background-color: antiquewhite;
+      // background-color: antiquewhite;
       border-radius: 50%;
       margin-bottom: 1.5rem;
     }
